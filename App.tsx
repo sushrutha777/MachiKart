@@ -178,39 +178,40 @@ const App: React.FC = () => {
                   <span className="text-[8px] md:text-xs uppercase tracking-widest text-primary-400 font-bold">Sea to Home</span>
                 </div>
               </div>
+            </div>
 
-              <div className="grid grid-cols-3 gap-2 md:gap-4 pt-2 items-start text-center">
-                <div className="flex flex-col items-center">
-                  <a
-                    href="https://www.instagram.com/macchikart?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors"
-                  >
-                    Instagram
-                  </a>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <a
-                    href="tel:+917996941065"
-                    className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
-                  >
-                    +91<br />7996941065
-                  </a>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <Link
-                    to="/admin"
-                    className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
-                  >
-                    Operator<br />Login
-                  </Link>
-                </div>
+            <div className="grid grid-cols-3 gap-2 md:gap-4 pt-2 items-start text-center">
+              <div className="flex flex-col items-center">
+                <a
+                  href="https://www.instagram.com/macchikart?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors"
+                >
+                  Instagram
+                </a>
               </div>
 
+              <div className="flex flex-col items-center">
+                <a
+                  href="tel:+917996941065"
+                  className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
+                >
+                  +91<br />7996941065
+                </a>
+              </div>
+
+              <div className="flex flex-col items-center">
+                <Link
+                  to="/admin"
+                  className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
+                >
+                  Operator<br />Login
+                </Link>
+              </div>
             </div>
+
+          </div>
         </footer>
       </div>
     </HashRouter>
