@@ -137,44 +137,45 @@ const AdminOrders: React.FC = () => {
     }
   };
 
+  // ... inside AdminOrders ...
   const getStatusStyle = (status: OrderStatus) => {
     switch (status) {
-      case 'NEW': return 'bg-yellow-100 text-yellow-800';
-      case 'CONFIRMED': return 'bg-blue-100 text-blue-800';
+      case 'NEW': return 'bg-secondary-100 text-secondary-800';
+      case 'CONFIRMED': return 'bg-primary-100 text-primary-800';
       case 'OUT_FOR_DELIVERY': return 'bg-purple-100 text-purple-800';
       case 'DELIVERED': return 'bg-green-100 text-green-800';
-      default: return 'bg-slate-100 text-slate-800';
+      default: return 'bg-primary-50 text-primary-800';
     }
   };
 
-  if (loading && orders.length === 0) return <div className="p-12 text-center text-slate-400 font-medium italic">Processing database...</div>;
+  if (loading && orders.length === 0) return <div className="p-12 text-center text-primary-400 font-medium italic">Processing database...</div>;
 
   return (
     <div className="space-y-8">
       {/* Batch Actions */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-white p-4 rounded-2xl border border-primary-100 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-          <span className="text-[10px] font-black text-slate-700 uppercase tracking-widest">Maintenance</span>
+          <div className="w-2 h-2 bg-secondary-500 rounded-full animate-pulse"></div>
+          <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest">Maintenance</span>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => cleanupOrders(7)} className="px-3 py-2 text-[10px] font-bold bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg border border-slate-200 transition-all">Clear &gt; 7 Days</button>
-          <button onClick={() => cleanupOrders(30)} className="px-3 py-2 text-[10px] font-bold bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg border border-slate-200 transition-all">Clear &gt; 30 Days</button>
+          <button onClick={() => cleanupOrders(7)} className="px-3 py-2 text-[10px] font-bold bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-lg border border-primary-100 transition-all">Clear &gt; 7 Days</button>
+          <button onClick={() => cleanupOrders(30)} className="px-3 py-2 text-[10px] font-bold bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-lg border border-primary-100 transition-all">Clear &gt; 30 Days</button>
           <button onClick={() => cleanupOrders("all")} className="px-3 py-2 text-[10px] font-black bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm transition-all uppercase tracking-tighter">Purge All</button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((o) => (
-          <div key={o.id} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-all">
-            <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+          <div key={o.id} className="bg-white rounded-2xl shadow-sm border border-primary-100 overflow-hidden flex flex-col hover:shadow-md transition-all">
+            <div className="p-4 border-b border-primary-50 bg-primary-50/50 flex justify-between items-center">
               <div>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">ID: {o.id?.slice(-6).toUpperCase()}</p>
+                <p className="text-[9px] font-black text-primary-400 uppercase tracking-widest">ID: {o.id?.slice(-6).toUpperCase()}</p>
               </div>
               <button
                 onClick={() => handleDeleteOrder(o.id!)}
                 disabled={processingId === o.id + 'delete'}
-                className="p-2 text-slate-300 hover:text-red-600 transition-all"
+                className="p-2 text-primary-300 hover:text-red-600 transition-all"
                 title="Delete Order"
               >
                 {processingId === o.id + 'delete' ? (
@@ -188,39 +189,39 @@ const AdminOrders: React.FC = () => {
             <div className="p-5 flex-grow space-y-4">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-black text-slate-800 leading-none mb-1">{o.customer_name}</h3>
-                  <p className="text-xs text-blue-600 font-bold">{o.phone_number}</p>
+                  <h3 className="font-black text-primary-950 leading-none mb-1">{o.customer_name}</h3>
+                  <p className="text-xs text-secondary-600 font-bold">{o.phone_number}</p>
                 </div>
                 <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter shadow-sm ${getStatusStyle(o.order_status)}`}>
                   {o.order_status}
                 </span>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-[11px] space-y-1.5">
+              <div className="bg-primary-50 p-3 rounded-xl border border-primary-100 text-[11px] space-y-1.5">
                 {o.items.map((item, idx) => (
                   <div key={idx} className="flex justify-between">
                     <span>{item.fish_name} × {item.quantity}</span>
-                    <span className="font-bold text-slate-800">${(item.price_per_kg * item.quantity).toFixed(2)}</span>
+                    <span className="font-bold text-primary-900">₹{(item.price_per_kg * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
-                <div className="pt-2 border-t border-slate-200 flex justify-between font-black text-slate-900 text-sm">
+                <div className="pt-2 border-t border-primary-200 flex justify-between font-black text-primary-950 text-sm">
                   <span>TOTAL</span>
-                  <span className="text-blue-600">${o.total_amount.toFixed(2)}</span>
+                  <span className="text-secondary-600">₹{o.total_amount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
 
-            <div className="p-3 bg-slate-50 border-t border-slate-100 grid grid-cols-3 gap-2">
-              <button onClick={() => handleUpdateStatus(o.id!, "CONFIRMED")} className="text-[9px] font-black bg-white border border-slate-200 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all">Confirm</button>
-              <button onClick={() => handleUpdateStatus(o.id!, "OUT_FOR_DELIVERY")} className="text-[9px] font-black bg-white border border-slate-200 py-2 rounded-lg hover:bg-purple-600 hover:text-white transition-all">Transit</button>
-              <button onClick={() => handleUpdateStatus(o.id!, "DELIVERED")} className="text-[9px] font-black bg-white border border-slate-200 py-2 rounded-lg hover:bg-green-600 hover:text-white transition-all">Deliver</button>
+            <div className="p-3 bg-primary-50 border-t border-primary-100 grid grid-cols-3 gap-2">
+              <button onClick={() => handleUpdateStatus(o.id!, "CONFIRMED")} className="text-[9px] font-black bg-white border border-primary-200 py-2 rounded-lg hover:bg-primary-950 hover:text-white transition-all">Confirm</button>
+              <button onClick={() => handleUpdateStatus(o.id!, "OUT_FOR_DELIVERY")} className="text-[9px] font-black bg-white border border-primary-200 py-2 rounded-lg hover:bg-purple-600 hover:text-white transition-all">Transit</button>
+              <button onClick={() => handleUpdateStatus(o.id!, "DELIVERED")} className="text-[9px] font-black bg-white border border-primary-200 py-2 rounded-lg hover:bg-green-600 hover:text-white transition-all">Deliver</button>
             </div>
           </div>
         ))}
       </div>
 
       {orders.length === 0 && !loading && (
-        <div className="py-24 text-center text-slate-400 font-black uppercase tracking-widest text-xs border-2 border-dashed rounded-3xl">
+        <div className="py-24 text-center text-primary-300 font-black uppercase tracking-widest text-xs border-2 border-dashed border-primary-200 rounded-3xl">
           No records found
         </div>
       )}

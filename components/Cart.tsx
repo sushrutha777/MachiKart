@@ -132,143 +132,157 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
     }
   };
 
+  // ... inside Cart ...
+  // ... inside Cart ...
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
-      case 'NEW': return 'bg-yellow-100 text-yellow-800';
-      case 'CONFIRMED': return 'bg-blue-100 text-blue-800';
+      case 'NEW': return 'bg-secondary-100 text-secondary-800';
+      case 'CONFIRMED': return 'bg-primary-100 text-primary-800';
       case 'OUT_FOR_DELIVERY': return 'bg-purple-100 text-purple-800';
       case 'DELIVERED': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-primary-50 text-primary-800';
     }
   };
 
+  // Success State (Terminal State)
+  if (orderSuccess) {
+    return (
+      <div className="bg-white p-8 rounded-2xl shadow-xl border border-primary-100 sticky top-24 text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+        </div>
+        <h3 className="text-xl font-black text-primary-950 mb-2">Order Confirmed!</h3>
+        <p className="text-sm text-primary-500 mb-6">Your fresh catch is being prepared associated with Order ID:</p>
+        <div className="bg-primary-50 p-3 rounded-lg border border-primary-100 mb-6">
+          <p className="font-mono font-bold text-primary-900 select-all">{orderSuccess}</p>
+        </div>
+        <button
+          onClick={() => {
+            setOrderSuccess(null);
+            onOrderConfirmed();
+          }}
+          className="text-sm font-bold text-secondary-600 hover:underline"
+        >
+          Start New Order
+        </button>
+      </div>
+    );
+  }
+
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24 max-h-[calc(100vh-8rem)] flex flex-col">
+    <div className="bg-white p-6 rounded-2xl shadow-xl shadow-primary-900/10 border border-primary-100 sticky top-24">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-black text-slate-800 tracking-tight">Basket</h2>
-        <span className="bg-blue-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase">
+        <h2 className="text-2xl font-black text-primary-950 tracking-tight">Basket</h2>
+        <span className="bg-primary-950 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase shadow-sm shadow-primary-200">
           {items.length} Units
         </span>
       </div>
 
-      {orderSuccess && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 animate-pulse text-sm">
-          <p className="font-bold">✓ Order Placed!</p>
-          <p className="text-xs mt-1">Ref: {orderSuccess}</p>
-          <button onClick={() => setOrderSuccess(null)} className="mt-2 text-[10px] font-black uppercase underline">Dismiss</button>
-        </div>
-      )}
-
-      {/* Status Check Section */}
-      <div className="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-        <h3 className="text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">Live Order Tracker</h3>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter Phone"
-            className="flex-grow text-sm p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-white transition-all"
-            value={searchPhone}
-            onChange={(e) => setSearchPhone(e.target.value)}
-          />
-          <button
-            onClick={checkStatus}
-            disabled={checkingStatus}
-            className="bg-slate-900 hover:bg-black text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all disabled:opacity-50 active:scale-95 shadow-sm"
-          >
-            {checkingStatus ? '...' : 'Sync'}
-          </button>
-        </div>
-
-        {statusError && <p className="mt-2 text-[10px] text-red-500 font-bold uppercase tracking-tighter">{statusError}</p>}
-
-        {recentOrder && (
-          <div className="mt-3 p-4 bg-white border border-slate-200 rounded-xl shadow-sm text-sm animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Current Status</span>
-              <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm ${getStatusColor(recentOrder.order_status)}`}>
-                {recentOrder.order_status}
-              </span>
+      {/* Cart Items List */}
+      <div className="space-y-4 mb-8 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+        {items.map(item => (
+          <div key={item.id} className="flex gap-4 items-center bg-primary-50 p-3 rounded-2xl group border border-transparent hover:border-secondary-200 transition-colors">
+            <img src={`https://picsum.photos/seed/${item.fish_name}/100/100`} alt={item.fish_name} className="w-16 h-16 rounded-xl object-cover" />
+            <div className="flex-1 min-w-0">
+              <h4 className="font-bold text-primary-950 truncate">{item.fish_name}</h4>
+              <p className="text-xs text-secondary-600 font-bold">₹{item.price_per_kg}/kg</p>
             </div>
-            <div className="text-[11px] text-slate-600 space-y-1 bg-slate-50 p-2 rounded-lg">
-              {recentOrder.items.map((it, idx) => (
-                <div key={idx} className="flex justify-between">
-                  <span>{it.fish_name} × {it.quantity}</span>
-                  <span className="font-bold text-slate-800">${(it.price_per_kg * it.quantity).toFixed(2)}</span>
-                </div>
-              ))}
-              <div className="mt-2 pt-2 border-t border-slate-200 flex justify-between font-black text-slate-900 text-[12px]">
-                <span>TOTAL (COD)</span>
-                <span>${recentOrder.total_amount.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="flex-grow overflow-y-auto mb-6 pr-1 custom-scrollbar">
-        {items.length === 0 ? (
-          <div className="text-slate-300 text-center py-16 flex flex-col items-center gap-3">
-            <svg className="w-16 h-16 opacity-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-            <p className="text-[10px] font-black uppercase tracking-widest">Basket is empty</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {items.map(item => (
-              <div key={item.id} className="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100 group hover:border-blue-200 transition-colors">
-                <div className="flex-grow">
-                  <h4 className="font-bold text-slate-800 text-xs">{item.fish_name}</h4>
-                  <p className="text-[10px] text-slate-400 font-bold">${item.price_per_kg.toFixed(2)}/kg</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center border border-slate-200 bg-white rounded-xl overflow-hidden h-9 shadow-sm">
-                    <button onClick={() => onUpdateQty(item.id, -1)} className="px-3 hover:bg-slate-50 text-slate-400 font-bold transition-colors">-</button>
-                    <span className="px-2 text-xs font-black text-slate-800 min-w-[1.5rem] text-center">{item.quantity}</span>
-                    <button onClick={() => onUpdateQty(item.id, 1)} className="px-3 hover:bg-slate-50 text-slate-400 font-bold transition-colors">+</button>
-                  </div>
-                  <button type="button" onClick={() => onRemove(item.id)} className="text-slate-300 hover:text-red-500 p-2 transition-colors">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="border-t pt-4">
-        <div className="flex justify-between items-end mb-6">
-          <div className="flex flex-col">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Grand Total</span>
-            <span className="text-3xl font-black text-blue-600 tracking-tighter leading-none">${total.toFixed(2)}</span>
-          </div>
-          <span className="text-[9px] font-bold text-slate-400 italic">COD Only</span>
-        </div>
-
-        {!showCheckout ? (
-          <button
-            onClick={() => items.length > 0 && setShowCheckout(true)}
-            disabled={items.length === 0}
-            className={`w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-lg active:scale-95
-              ${items.length === 0 ? 'bg-slate-100 text-slate-300 cursor-not-allowed shadow-none' : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200'}`}
-          >
-            Checkout Now
-          </button>
-        ) : (
-          <form onSubmit={handleCheckout} className="space-y-3 bg-slate-50 p-4 rounded-2xl border border-blue-100 animate-in slide-in-from-bottom-4 duration-500">
-            <h3 className="font-black text-slate-800 text-[11px] uppercase tracking-widest border-b border-blue-100 pb-2 mb-2">Delivery Info</h3>
-            <input required type="text" placeholder="Full Name" className="w-full p-3 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-white transition-all" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-            <input required type="tel" placeholder="Phone Number" className="w-full p-3 text-sm border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-white transition-all" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
-            <textarea required placeholder="Delivery Address" className="w-full p-3 text-sm border border-slate-200 rounded-xl h-24 focus:ring-2 focus:ring-blue-500 outline-none resize-none bg-white transition-all" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} />
-
-            <div className="flex gap-2 pt-2">
-              <button type="button" onClick={() => setShowCheckout(false)} className="flex-1 py-3 rounded-xl font-bold text-xs uppercase text-slate-500 hover:bg-white transition-all border border-slate-200">Back</button>
-              <button type="submit" disabled={submitting} className="flex-[2] py-3 rounded-xl font-black text-xs uppercase tracking-widest bg-blue-600 text-white hover:bg-blue-700 shadow-md active:scale-95 disabled:opacity-50 transition-all">
-                {submitting ? 'Sending...' : 'Confirm Order'}
+            <div className="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border border-primary-100 shadow-sm">
+              <button
+                disabled={showCheckout}
+                onClick={() => onUpdateQty(item.id, -1)}
+                className="w-6 h-6 flex items-center justify-center text-primary-400 hover:text-secondary-600 transition-colors disabled:opacity-50"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M20 12H4" /></svg>
+              </button>
+              <span className="text-sm font-black w-4 text-center">{item.quantity}</span>
+              <button
+                disabled={showCheckout}
+                onClick={() => onUpdateQty(item.id, 1)}
+                className="w-6 h-6 flex items-center justify-center text-primary-400 hover:text-secondary-600 transition-colors disabled:opacity-50"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
               </button>
             </div>
-          </form>
-        )}
+            <button
+              disabled={showCheckout}
+              onClick={() => onRemove(item.id)}
+              className="text-primary-300 hover:text-red-500 transition-colors p-2 disabled:opacity-50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            </button>
+          </div>
+        ))}
       </div>
+
+      <div className="flex justify-between items-end mb-6 pt-6 border-t border-primary-100">
+        <span className="text-xs font-bold text-primary-400 uppercase tracking-widest">Total Amount</span>
+        <span className="text-3xl font-black text-secondary-500 tracking-tighter leading-none">₹{total.toFixed(2)}</span>
+      </div>
+
+      {!showCheckout ? (
+        <button
+          onClick={() => setShowCheckout(true)}
+          className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] bg-primary-950 hover:bg-black text-white shadow-lg shadow-primary-900/20 transition-all active:scale-95"
+        >
+          Checkout
+        </button>
+      ) : (
+        <div className="animate-fade-in-up">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-black text-primary-950">Shipping Details</h3>
+            <button onClick={() => setShowCheckout(false)} className="text-xs font-bold text-red-500 hover:text-red-700">
+              CANCEL
+            </button>
+          </div>
+
+          <form onSubmit={handleCheckout} className="space-y-4">
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-primary-400 mb-1">Customer Name</label>
+              <input
+                required
+                type="text"
+                className="w-full p-4 bg-primary-50 rounded-xl text-sm font-bold text-primary-900 placeholder-primary-300 outline-none focus:ring-2 focus:ring-secondary-400 transition-all border border-transparent focus:bg-white"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-primary-400 mb-1">Mobile Number</label>
+              <input
+                required
+                type="tel"
+                className="w-full p-4 bg-primary-50 rounded-xl text-sm font-bold text-primary-900 placeholder-primary-300 outline-none focus:ring-2 focus:ring-secondary-400 transition-all border border-transparent focus:bg-white"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-primary-400 mb-1">Delivery Address</label>
+              <textarea
+                required
+                rows={3}
+                className="w-full p-4 bg-primary-50 rounded-xl text-sm font-bold text-primary-900 placeholder-primary-300 outline-none focus:ring-2 focus:ring-secondary-400 transition-all border border-transparent focus:bg-white resize-none"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] bg-primary-950 hover:bg-black text-white shadow-lg shadow-primary-900/20 transition-all active:scale-95 disabled:opacity-70 mt-4"
+            >
+              {submitting ? 'Placing Order...' : 'Confirm Order'}
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

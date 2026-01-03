@@ -109,46 +109,48 @@ const AdminProducts: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (loading) return <div className="p-12 text-center text-slate-400 font-medium italic">Syncing inventory...</div>;
+  // ... inside AdminProducts ...
+  // ... inside AdminProducts ...
+  if (loading) return <div className="p-12 text-center text-primary-400 font-medium italic">Syncing inventory...</div>;
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
       <div className="xl:col-span-1">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
-          <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-widest flex items-center gap-2">
-            <span className="w-2 h-6 bg-blue-600 rounded-full"></span>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-primary-100 sticky top-24">
+          <h2 className="text-lg font-black text-primary-950 mb-6 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-2 h-6 bg-secondary-500 rounded-full"></span>
             {editingId ? "Modify Catch" : "Add New Catch"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Variety Name</label>
+              <label className="block text-[10px] font-black text-primary-400 mb-1 uppercase tracking-widest">Variety Name</label>
               <input
                 required
-                className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-sm font-semibold"
+                className="w-full p-3.5 bg-primary-50 border border-primary-200 rounded-xl outline-none focus:ring-2 focus:ring-secondary-400 focus:bg-white transition-all text-sm font-semibold"
                 placeholder="e.g. Pomfret"
                 value={form.fish_name}
                 onChange={(e) => setForm({ ...form, fish_name: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Price ($/kg)</label>
+              <label className="block text-[10px] font-black text-primary-400 mb-1 uppercase tracking-widest">Price (₹/kg)</label>
               <input
                 required
                 type="number"
                 step="0.01"
-                className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-sm font-semibold"
+                className="w-full p-3.5 bg-primary-50 border border-primary-200 rounded-xl outline-none focus:ring-2 focus:ring-secondary-400 focus:bg-white transition-all text-sm font-semibold"
                 value={form.price_per_kg}
                 onChange={(e) => setForm({ ...form, price_per_kg: Number(e.target.value) })}
               />
             </div>
-            <label className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 cursor-pointer hover:bg-slate-100 transition-colors">
+            <label className="flex items-center gap-3 p-3 bg-primary-50 rounded-xl border border-primary-100 cursor-pointer hover:bg-primary-100 transition-colors">
               <input
                 type="checkbox"
-                className="w-5 h-5 text-blue-600 rounded-md border-slate-300 focus:ring-blue-500"
+                className="w-5 h-5 text-secondary-500 rounded-md border-primary-300 focus:ring-secondary-400"
                 checked={form.available}
                 onChange={(e) => setForm({ ...form, available: e.target.checked })}
               />
-              <span className="text-xs font-bold text-slate-600">Visible to Customers</span>
+              <span className="text-xs font-bold text-primary-600">Visible to Customers</span>
             </label>
             <div className="flex gap-2 pt-2">
               {editingId && (
@@ -158,7 +160,7 @@ const AdminProducts: React.FC = () => {
                     setEditingId(null);
                     setForm({ fish_name: "", price_per_kg: 0, available: true });
                   }}
-                  className="flex-1 py-3.5 rounded-xl font-bold text-xs uppercase text-slate-500 bg-slate-100 hover:bg-slate-200"
+                  className="flex-1 py-3.5 rounded-xl font-bold text-xs uppercase text-primary-500 bg-primary-100 hover:bg-primary-200"
                 >
                   Cancel
                 </button>
@@ -166,7 +168,7 @@ const AdminProducts: React.FC = () => {
               <button
                 type="submit"
                 disabled={!!processingId}
-                className="flex-[2] py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-100 transition-all disabled:opacity-50"
+                className="flex-[2] py-3.5 bg-primary-950 hover:bg-black text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary-900/20 transition-all disabled:opacity-50"
               >
                 {processingId === "form-submit" ? "Syncing..." : editingId ? "Update Item" : "Add Product"}
               </button>
@@ -176,42 +178,42 @@ const AdminProducts: React.FC = () => {
       </div>
 
       <div className="xl:col-span-2">
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-primary-100 overflow-hidden">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 border-b border-slate-100">
+            <thead className="bg-primary-50 border-b border-primary-100">
               <tr>
-                <th className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Product</th>
-                <th className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Price</th>
-                <th className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Status</th>
-                <th className="px-6 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                <th className="px-6 py-4 text-[9px] font-black text-primary-400 uppercase tracking-widest">Product</th>
+                <th className="px-6 py-4 text-[9px] font-black text-primary-400 uppercase tracking-widest text-center">Price</th>
+                <th className="px-6 py-4 text-[9px] font-black text-primary-400 uppercase tracking-widest text-center">Status</th>
+                <th className="px-6 py-4 text-[9px] font-black text-primary-400 uppercase tracking-widest text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-primary-50">
               {products.map((p) => (
-                <tr key={p.id} className="hover:bg-slate-50 transition-colors group">
+                <tr key={p.id} className="hover:bg-primary-50 transition-colors group">
                   <td className="px-6 py-4">
-                    <span className="font-bold text-slate-800">{p.fish_name}</span>
+                    <span className="font-bold text-primary-900">{p.fish_name}</span>
                   </td>
-                  <td className="px-6 py-4 text-center font-bold text-blue-600">${p.price_per_kg.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-center font-bold text-secondary-600">₹{p.price_per_kg.toFixed(2)}</td>
                   <td className="px-6 py-4 text-center">
-                    <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase ${p.available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase ${p.available ? 'bg-secondary-100 text-secondary-700' : 'bg-primary-100 text-primary-400'}`}>
                       {p.available ? "Available" : "Hidden"}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
-                      <button onClick={() => handleEdit(p)} className="p-2 text-slate-400 hover:text-blue-600 transition-all">
+                      <button onClick={() => handleEdit(p)} className="p-2 text-primary-300 hover:text-secondary-600 transition-all">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                       </button>
                       <button
                         type="button"
                         onClick={() => handleDelete(p.id)}
                         disabled={processingId === p.id}
-                        className="p-2 text-slate-300 hover:text-red-600 transition-all"
+                        className="p-2 text-primary-300 hover:text-red-500 transition-all"
                         title="Delete Fish"
                       >
                         {processingId === p.id ? (
-                          <div className="w-4 h-4 border-2 border-red-600 border-t-transparent animate-spin rounded-full"></div>
+                          <div className="w-4 h-4 border-2 border-red-500 border-t-transparent animate-spin rounded-full"></div>
                         ) : (
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         )}

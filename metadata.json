@@ -1,5 +1,0 @@
-{
-  "name": "MachiCart - Fresh Fish Grocery",
-  "description": "A serverless fish grocery platform with customer ordering and admin management powered by Firebase Firestore.",
-  "requestFramePermissions": []
-}
