@@ -164,26 +164,26 @@ const App: React.FC = () => {
             <Route path="/admin/*" element={<AdminView />} />
           </Routes>
         </main>
-        <footer className="bg-primary-950 border-t border-primary-900 py-16">
+        <footer className="bg-primary-950 border-t border-primary-900 py-4 md:py-16">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col items-center justify-center mb-6">
+            <div className="flex flex-col items-center justify-center mb-2 md:mb-6">
               <div className="flex items-center gap-4 mb-2">
                 <img
                   src="/logo.jpg"
                   alt="MacchiKart"
-                  className="w-16 h-16 rounded-2xl shadow-lg border-2 border-white/10"
+                  className="w-10 h-10 md:w-16 md:h-16 rounded-2xl shadow-lg border-2 border-white/10"
                 />
-                <span className="text-4xl font-black text-white tracking-tighter">MacchiKart</span>
+                <span className="text-lg md:text-4xl font-black text-white tracking-tighter">MacchiKart</span>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 pt-2 items-start text-center">
+            <div className="grid grid-cols-3 gap-2 md:gap-4 pt-2 items-start text-center">
               <div className="flex flex-col items-center">
                 <a
                   href="https://www.instagram.com/macchikart?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors"
+                  className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors"
                 >
                   Instagram
                 </a>
@@ -192,7 +192,7 @@ const App: React.FC = () => {
               <div className="flex flex-col items-center">
                 <a
                   href="tel:+917996941065"
-                  className="text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
+                  className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
                 >
                   +91<br />7996941065
                 </a>
@@ -201,7 +201,7 @@ const App: React.FC = () => {
               <div className="flex flex-col items-center">
                 <Link
                   to="/admin"
-                  className="text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
+                  className="text-[8px] md:text-xs font-black text-primary-400 hover:text-white uppercase tracking-[0.2em] transition-colors leading-relaxed"
                 >
                   Operator<br />Login
                 </Link>
