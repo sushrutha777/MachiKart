@@ -87,7 +87,7 @@ const CustomerView: React.FC<CustomerViewProps> = ({
         </div>
         <h1 className="text-5xl md:text-7xl font-black text-primary-950 dark:text-white tracking-tighter leading-[0.9]">
           MacchiKart <br />
-          <span className="text-secondary-500">Sea to Home</span>
+          <span className="text-secondary-500 text-3xl md:text-5xl">Sea to Home</span>
         </h1>
         <p className="max-w-2xl mx-auto text-primary-500 dark:text-primary-400 font-medium mt-6 leading-relaxed">
           Directly from Mangalore's Old Port. Hand-selected, masterfully cleaned, and dispatched the same morning to your doorstep.
