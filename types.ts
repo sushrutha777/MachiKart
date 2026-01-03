@@ -6,17 +6,21 @@ export interface Product {
   fish_name: string;
   price_per_kg: number;
   available: boolean;
+  is_premium?: boolean;
+  image_url?: string;
   last_updated: any;
 }
 
 export interface CartItem extends Product {
   quantity: number;
+  cleaning?: boolean;
 }
 
 export interface OrderItem {
   fish_name: string;
   price_per_kg: number;
   quantity: number;
+  cleaning?: boolean;
 }
 
 export interface Order {

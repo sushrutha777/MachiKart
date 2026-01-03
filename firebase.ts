@@ -18,7 +18,9 @@ import {
   Timestamp,
   onSnapshot,
   writeBatch,
+  setDoc
 } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC1WYcawmippctXm9s8Wd9xiV7NNYDxtwk",
@@ -31,9 +33,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 export {
   db,
+  storage,
   collection,
   doc,
   addDoc,
@@ -49,4 +53,8 @@ export {
   Timestamp,
   onSnapshot,
   writeBatch,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  setDoc
 };

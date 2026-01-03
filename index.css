@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .bg-golden-shine {
+    background: linear-gradient(120deg,
+        #fdfbf7 0%,
+        /* Very subtle antique white */
+        #fffaf0 25%,
+        /* Floral white */
+        #fff8e1 50%,
+        /* Very light amber */
+        #fffaf0 75%,
+        /* Back to Floral white */
+        #fdfbf7 100%
+        /* Back to antique white */
+      );
+    background-size: 200% 200%;
+    animation: goldenShine 15s ease infinite;
+  }
+
+  @keyframes goldenShine {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Modern Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary-200 dark:bg-primary-700 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-300 dark:bg-primary-600;
+  }
+}
