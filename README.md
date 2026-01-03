@@ -1,4 +1,4 @@
-# 🐟 MacchiKart - Premium Coastal Catch
+# 🐟 MacchiKart - Sea to Home
 
 **MacchiKart** is a premium fish delivery web application designed to bring the freshest coastal catch directly to customers' doorsteps. It features a stunning, high-end "Black & Gold" UI, real-time order tracking, and a robust Admin Dashboard for business operations.
 
