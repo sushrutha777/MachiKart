@@ -132,6 +132,15 @@ const App: React.FC = () => {
     }));
   };
 
+  const toggleCleaning = (productId: string) => {
+    setCart(prev => prev.map(item => {
+      if (item.id === productId) {
+        return { ...item, cleaning: !item.cleaning };
+      }
+      return item;
+    }));
+  };
+
   const clearCart = () => setCart([]);
 
   const scrollToCart = () => {
@@ -159,6 +168,7 @@ const App: React.FC = () => {
                 removeFromCart={removeFromCart}
                 updateQuantity={updateQuantity}
                 clearCart={clearCart}
+                toggleCleaning={toggleCleaning}
               />
             } />
             <Route path="/admin/*" element={<AdminView />} />

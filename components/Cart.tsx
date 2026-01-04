@@ -37,7 +37,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
   const [statusError, setStatusError] = useState('');
   const [checkingStatus, setCheckingStatus] = useState(false);
 
-  const total = items.reduce((sum, item) => sum + ((item.price_per_kg + (item.cleaning ? 30 : 0)) * item.quantity), 0);
+  const total = items.reduce((sum, item) => sum + (item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0), 0);
 
   // Effect to handle real-time status updates once an order is found
   useEffect(() => {
@@ -81,7 +81,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
           quantity: item.quantity,
           cleaning: item.cleaning
         })),
-        total_amount: total + 40,
+        total_amount: total,
         payment_method: "Cash on Delivery",
         order_status: "NEW",
         created_at: serverTimestamp()
@@ -263,13 +263,10 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
         <span className="text-xs font-bold text-primary-400 dark:text-primary-500 uppercase tracking-widest">Subtotal</span>
         <span className="text-xl font-bold text-primary-900 dark:text-white tracking-tight">₹{total.toFixed(2)}</span>
       </div>
-      <div className="flex justify-between items-end mb-6">
-        <span className="text-xs font-bold text-primary-400 dark:text-primary-500 uppercase tracking-widest">Delivery Charge</span>
-        <span className="text-xl font-bold text-primary-900 dark:text-white tracking-tight">₹40.00</span>
-      </div>
+
       <div className="flex justify-between items-end mb-6 pt-4 border-t-2 border-dashed border-primary-100 dark:border-primary-800">
         <span className="text-sm font-black text-primary-950 dark:text-white uppercase tracking-widest">Total Amount</span>
-        <span className="text-4xl font-black text-secondary-500 tracking-tighter leading-none">₹{(total + 40).toFixed(2)}</span>
+        <span className="text-4xl font-black text-secondary-500 tracking-tighter leading-none">₹{total.toFixed(2)}</span>
       </div>
 
       {!showCheckout ? (
@@ -411,7 +408,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
               {recentOrder.items.map((item, idx) => (
                 <div key={idx} className="flex justify-between text-xs font-bold text-primary-600 dark:text-primary-400">
                   <span>{item.fish_name} <span className="text-primary-400">× {item.quantity}</span></span>
-                  <span>₹{(item.price_per_kg * item.quantity).toFixed(2)}</span>
+                  <span>₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0)).toFixed(2)}</span>
                 </div>
               ))}
             </div>

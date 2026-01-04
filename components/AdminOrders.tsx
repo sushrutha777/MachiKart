@@ -210,7 +210,7 @@ const AdminOrders: React.FC = () => {
                 {o.items.map((item, idx) => (
                   <div key={idx} className="flex justify-between text-primary-700 dark:text-primary-300">
                     <span>{item.fish_name} × {item.quantity}</span>
-                    <span className="font-bold text-primary-900 dark:text-white">₹{(item.price_per_kg * item.quantity).toFixed(2)}</span>
+                    <span className="font-bold text-primary-900 dark:text-white">₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0)).toFixed(2)}</span>
                   </div>
                 ))}
                 <div className="pt-2 border-t border-primary-200 dark:border-primary-800 flex justify-between font-black text-primary-950 dark:text-white text-sm">
@@ -224,7 +224,7 @@ const AdminOrders: React.FC = () => {
               <button
                 onClick={() => handleUpdateStatus(o.id!, "CONFIRMED")}
                 disabled={processingId === o.id + "CONFIRMED"}
-                className={`flex items-center justify-center text-[10px] uppercase tracking-widest font-black py-2.5 rounded-xl transition-all active:scale-95 border ${o.order_status === 'CONFIRMED' ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-500/20' : 'bg-transparent text-primary-400 dark:text-primary-500 border-primary-200 dark:border-primary-700 hover:border-green-500 hover:text-green-500'} ${processingId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`flex items-center justify-center text-[10px] uppercase tracking-widest font-black h-9 rounded-xl transition-all active:scale-95 border ${o.order_status === 'CONFIRMED' ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-500/20' : 'bg-transparent text-primary-400 dark:text-primary-500 border-primary-200 dark:border-primary-700 hover:border-green-500 hover:text-green-500'} ${processingId ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {processingId === o.id + "CONFIRMED" ? (
                   <div className="w-4 h-4 border-2 border-current border-t-transparent animate-spin rounded-full"></div>
@@ -235,7 +235,7 @@ const AdminOrders: React.FC = () => {
               <button
                 onClick={() => handleUpdateStatus(o.id!, "OUT_FOR_DELIVERY")}
                 disabled={processingId === o.id + "OUT_FOR_DELIVERY"}
-                className={`flex items-center justify-center text-[10px] uppercase tracking-widest font-black py-2.5 rounded-xl transition-all active:scale-95 border ${o.order_status === 'OUT_FOR_DELIVERY' ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-500/20' : 'bg-transparent text-primary-400 dark:text-primary-500 border-primary-200 dark:border-primary-700 hover:border-green-500 hover:text-green-500'} ${processingId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`flex items-center justify-center text-[10px] uppercase tracking-widest font-black h-9 rounded-xl transition-all active:scale-95 border ${o.order_status === 'OUT_FOR_DELIVERY' ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-500/20' : 'bg-transparent text-primary-400 dark:text-primary-500 border-primary-200 dark:border-primary-700 hover:border-green-500 hover:text-green-500'} ${processingId ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {processingId === o.id + "OUT_FOR_DELIVERY" ? (
                   <div className="w-4 h-4 border-2 border-current border-t-transparent animate-spin rounded-full"></div>
@@ -246,7 +246,7 @@ const AdminOrders: React.FC = () => {
               <button
                 onClick={() => handleUpdateStatus(o.id!, "DELIVERED")}
                 disabled={processingId === o.id + "DELIVERED"}
-                className={`flex items-center justify-center text-[10px] uppercase tracking-widest font-black py-2.5 rounded-xl transition-all active:scale-95 border ${o.order_status === 'DELIVERED' ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-500/20' : 'bg-transparent text-primary-400 dark:text-primary-500 border-primary-200 dark:border-primary-700 hover:border-green-500 hover:text-green-500'} ${processingId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`flex items-center justify-center text-[10px] uppercase tracking-widest font-black h-9 rounded-xl transition-all active:scale-95 border ${o.order_status === 'DELIVERED' ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-500/20' : 'bg-transparent text-primary-400 dark:text-primary-500 border-primary-200 dark:border-primary-700 hover:border-green-500 hover:text-green-500'} ${processingId ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {processingId === o.id + "DELIVERED" ? (
                   <div className="w-4 h-4 border-2 border-current border-t-transparent animate-spin rounded-full"></div>

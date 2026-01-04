@@ -18,6 +18,7 @@ interface CustomerViewProps {
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, delta: number) => void;
   clearCart: () => void;
+  toggleCleaning: (productId: string) => void;
 }
 
 const CustomerView: React.FC<CustomerViewProps> = ({
@@ -25,7 +26,8 @@ const CustomerView: React.FC<CustomerViewProps> = ({
   addToCart,
   removeFromCart,
   updateQuantity,
-  clearCart
+  clearCart,
+  toggleCleaning
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -145,6 +147,8 @@ const CustomerView: React.FC<CustomerViewProps> = ({
                   key={product.id}
                   product={product}
                   onAdd={(cleaning) => addToCart(product, cleaning)}
+                  cartItem={cart.find(item => item.id === product.id)}
+                  onToggleCleaning={() => toggleCleaning(product.id)}
                 />
               ))}
             </div>

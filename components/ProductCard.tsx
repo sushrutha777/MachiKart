@@ -7,8 +7,11 @@ interface Props {
   onAdd: (cleaning: boolean) => void;
 }
 
-const ProductCard: React.FC<Props> = ({ product, onAdd }) => {
+const ProductCard: React.FC<Props & { cartItem?: import('../types').CartItem, onToggleCleaning?: () => void }> = ({ product, onAdd, cartItem, onToggleCleaning }) => {
   const [isCleaning, setIsCleaning] = React.useState(false);
+
+  // Use cart state if available, otherwise local state
+  const cleaningState = cartItem ? cartItem.cleaning : isCleaning;
 
   return (
     <div className="bg-white dark:bg-primary-900 rounded-3xl shadow-xl shadow-primary-900/5 p-4 border border-white dark:border-primary-800 hover:border-secondary-100 dark:hover:border-secondary-900 transition-all duration-300 group flex flex-col items-center text-center">
@@ -55,18 +58,22 @@ const ProductCard: React.FC<Props> = ({ product, onAdd }) => {
         <div
           onClick={() => {
             if (product.available !== false) {
-              setIsCleaning(!isCleaning);
+              if (cartItem && onToggleCleaning) {
+                onToggleCleaning();
+              } else {
+                setIsCleaning(!isCleaning);
+              }
             }
           }}
           className={`cursor-pointer p-3 rounded-xl border-2 transition-all flex items-center justify-center gap-3 
             ${product.available === false ? 'opacity-50 cursor-not-allowed border-neutral-200 dark:border-neutral-800' : ''}
-            ${isCleaning ? 'border-secondary-500 bg-secondary-50 dark:bg-secondary-900/20' : 'border-primary-100 dark:border-primary-800 bg-transparent'}`}
+            ${cleaningState ? 'border-secondary-500 bg-secondary-50 dark:bg-secondary-900/20' : 'border-primary-100 dark:border-primary-800 bg-transparent'}`}
         >
-          <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${isCleaning ? 'bg-secondary-500 border-secondary-500' : 'border-primary-300'}`}>
-            {isCleaning && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>}
+          <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${cleaningState ? 'bg-secondary-500 border-secondary-500' : 'border-primary-300'}`}>
+            {cleaningState && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>}
           </div>
-          <span className={`text-xs font-bold ${isCleaning ? 'text-secondary-700 dark:text-secondary-400' : 'text-primary-400'}`}>
-            Add Cleaning (+₹30)
+          <span className={`text-xs font-bold ${cleaningState ? 'text-secondary-700 dark:text-secondary-400' : 'text-primary-400'}`}>
+            {cartItem ? (cleaningState ? 'Cleaned (+₹30)' : 'Add Cleaning (+₹30)') : 'Add Cleaning (+₹30)'}
           </span>
         </div>
 
