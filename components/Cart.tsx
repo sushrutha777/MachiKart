@@ -81,7 +81,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
           quantity: item.quantity,
           cleaning: item.cleaning
         })),
-        total_amount: total,
+        total_amount: total + 40,
         payment_method: "Cash on Delivery",
         order_status: "NEW",
         created_at: serverTimestamp()
@@ -259,9 +259,17 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
         )}
       </div>
 
-      <div className="flex justify-between items-end mb-6 pt-6 border-t border-primary-100 dark:border-primary-800">
-        <span className="text-xs font-bold text-primary-400 dark:text-primary-500 uppercase tracking-widest">Total Amount</span>
-        <span className="text-3xl font-black text-secondary-500 tracking-tighter leading-none">₹{total.toFixed(2)}</span>
+      <div className="flex justify-between items-end mb-2 pt-6 border-t border-primary-100 dark:border-primary-800">
+        <span className="text-xs font-bold text-primary-400 dark:text-primary-500 uppercase tracking-widest">Subtotal</span>
+        <span className="text-xl font-bold text-primary-900 dark:text-white tracking-tight">₹{total.toFixed(2)}</span>
+      </div>
+      <div className="flex justify-between items-end mb-6">
+        <span className="text-xs font-bold text-primary-400 dark:text-primary-500 uppercase tracking-widest">Delivery Charge</span>
+        <span className="text-xl font-bold text-primary-900 dark:text-white tracking-tight">₹40.00</span>
+      </div>
+      <div className="flex justify-between items-end mb-6 pt-4 border-t-2 border-dashed border-primary-100 dark:border-primary-800">
+        <span className="text-sm font-black text-primary-950 dark:text-white uppercase tracking-widest">Total Amount</span>
+        <span className="text-4xl font-black text-secondary-500 tracking-tighter leading-none">₹{(total + 40).toFixed(2)}</span>
       </div>
 
       {!showCheckout ? (
@@ -361,16 +369,41 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
 
         {recentOrder && (
           <div className="bg-primary-50 dark:bg-primary-950/50 p-4 rounded-2xl border border-primary-100 dark:border-primary-800 animation-fade-in-up">
-            <div className="flex justify-between items-start mb-3">
+            <div className="flex justify-between items-center mb-4 pb-4 border-b border-primary-100 dark:border-primary-800">
               <div>
-                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Order Status</p>
-                <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${getStatusColor(recentOrder.order_status)}`}>
-                  {recentOrder.order_status.replace(/_/g, " ")}
-                </span>
+                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Order Total</p>
+                <p className="text-xl font-black text-primary-950 dark:text-white">₹{recentOrder.total_amount.toFixed(2)}</p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Total</p>
-                <p className="text-sm font-black text-primary-900 dark:text-white">₹{recentOrder.total_amount.toFixed(2)}</p>
+                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Items</p>
+                <p className="text-sm font-bold text-primary-900 dark:text-white">{recentOrder.items.length}</p>
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2">Current Status</p>
+              <div className={`p-4 rounded-xl border-l-4 shadow-sm ${recentOrder.order_status === 'NEW' ? 'bg-secondary-50 border-secondary-500 text-secondary-900' :
+                recentOrder.order_status === 'CONFIRMED' ? 'bg-blue-50 border-blue-500 text-blue-900' :
+                  recentOrder.order_status === 'OUT_FOR_DELIVERY' ? 'bg-purple-50 border-purple-500 text-purple-900' :
+                    recentOrder.order_status === 'DELIVERED' ? 'bg-green-50 border-green-500 text-green-900' :
+                      'bg-gray-50 border-gray-500 text-gray-900'
+                }`}>
+                <p className="font-bold text-sm leading-relaxed">
+                  {(() => {
+                    switch (recentOrder.order_status) {
+                      case 'NEW':
+                        return "Waiting for admin to confirm your order, it will take another few minutes to confirm";
+                      case 'CONFIRMED':
+                        return "Your order has been confirmed";
+                      case 'OUT_FOR_DELIVERY':
+                        return "Your order is on delivery will reach soon in 30 minutes";
+                      case 'DELIVERED':
+                        return "Delivered";
+                      default:
+                        return recentOrder.order_status.replace(/_/g, " ");
+                    }
+                  })()}
+                </p>
               </div>
             </div>
 

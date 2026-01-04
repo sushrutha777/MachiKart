@@ -77,7 +77,7 @@ const AdminProducts: React.FC = () => {
       const productData: any = {
         fish_name: form.fish_name,
         price_per_kg: form.price_per_kg,
-        available: true, // Always available as per new requirement
+        available: form.available,
         is_premium: form.is_premium,
         last_updated: serverTimestamp(),
       };
@@ -149,7 +149,7 @@ const AdminProducts: React.FC = () => {
     setForm({
       fish_name: p.fish_name,
       price_per_kg: p.price_per_kg,
-      available: true,
+      available: p.available !== undefined ? p.available : true,
       is_premium: !!p.is_premium,
     });
     setImageFile(null);
@@ -197,18 +197,32 @@ const AdminProducts: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-black text-primary-400 dark:text-primary-500 mb-2 uppercase tracking-widest pl-1">Category</label>
-                  <label className={`h-[54px] flex items-center justify-center gap-2 rounded-2xl border cursor-pointer transition-all ${form.is_premium ? 'bg-secondary-500 text-primary-950 border-secondary-500 shadow-lg shadow-secondary-500/20' : 'bg-primary-50 dark:bg-primary-950 border-primary-200 dark:border-primary-800 text-primary-400'}`}>
-                    <input
-                      type="checkbox"
-                      className="hidden"
-                      checked={form.is_premium}
-                      onChange={(e) => setForm({ ...form, is_premium: e.target.checked })}
-                    />
-                    <span className="text-[10px] font-black uppercase tracking-widest">
-                      {form.is_premium ? "✨ Premium" : "Standard"}
-                    </span>
-                  </label>
+                  <label className="block text-[11px] font-black text-primary-400 dark:text-primary-500 mb-2 uppercase tracking-widest pl-1">Category & Status</label>
+                  <div className="flex gap-2">
+                    <label className={`flex-1 h-[54px] flex items-center justify-center gap-2 rounded-2xl border cursor-pointer transition-all ${form.is_premium ? 'bg-secondary-500 text-primary-950 border-secondary-500 shadow-lg shadow-secondary-500/20' : 'bg-primary-50 dark:bg-primary-950 border-primary-200 dark:border-primary-800 text-primary-400'}`}>
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={form.is_premium}
+                        onChange={(e) => setForm({ ...form, is_premium: e.target.checked })}
+                      />
+                      <span className="text-[10px] font-black uppercase tracking-widest">
+                        {form.is_premium ? "✨ Premium" : "Standard"}
+                      </span>
+                    </label>
+
+                    <label className={`flex-1 h-[54px] flex items-center justify-center gap-2 rounded-2xl border cursor-pointer transition-all ${form.available ? 'bg-green-500 text-white border-green-500 shadow-lg shadow-green-500/20' : 'bg-red-500 text-white border-red-500 shadow-lg shadow-red-500/20'}`}>
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={form.available}
+                        onChange={(e) => setForm({ ...form, available: e.target.checked })}
+                      />
+                      <span className="text-[10px] font-black uppercase tracking-widest">
+                        {form.available ? "In Stock" : "Sold Out"}
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
               <div>
@@ -351,11 +365,49 @@ const AdminProducts: React.FC = () => {
                         Standard
                       </span>
                     )}
+                    {!p.available && (
+                      <span className="mt-1 px-2.5 py-1 rounded-full text-[9px] font-black uppercase bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 block w-fit mx-auto">
+                        Sold Out
+                      </span>
+                    )}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
                       <button onClick={() => handleEdit(p)} className="p-2 text-primary-300 dark:text-primary-600 hover:text-secondary-600 dark:hover:text-secondary-400 transition-all">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (processingId) return;
+                          setProcessingId(p.id);
+                          try {
+                            await updateDoc(doc(db, "products", p.id), {
+                              available: !p.available,
+                              last_updated: serverTimestamp()
+                            });
+                          } catch (err: any) {
+                            console.error("Error toggling availability:", err);
+                            alert("Error: " + err.message);
+                          } finally {
+                            setProcessingId(null);
+                          }
+                        }}
+                        className={`p-2 transition-all ${p.available
+                          ? 'text-green-500 hover:text-green-600'
+                          : 'text-red-400 hover:text-red-500'
+                          }`}
+                        title={p.available ? "Mark as Sold Out" : "Mark as In Stock"}
+                      >
+                        {processingId === p.id ? (
+                          <div className="w-4 h-4 border-2 border-primary-300 border-t-transparent animate-spin rounded-full"></div>
+                        ) : (
+                          p.available ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                          )
+                        )}
                       </button>
                       <button
                         type="button"
