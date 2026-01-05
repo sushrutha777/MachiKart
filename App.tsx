@@ -111,7 +111,7 @@ const App: React.FC = () => {
             : item
         );
       }
-      return [...prev, { ...product, quantity: 0.5, cleaning }];
+      return [...prev, { ...product, quantity: 1, cleaning }];
     });
     // Auto-scroll to cart when item is added
     setTimeout(scrollToCart, 100);
@@ -125,7 +125,7 @@ const App: React.FC = () => {
     setCart(prev => prev.map(item => {
       if (item.id === productId) {
         // Use parseFloat(toFixed(1)) to avoid floating point errors (e.g. 0.5 + 0.1 = 0.60000001)
-        const newQty = Math.max(0.5, parseFloat((item.quantity + delta).toFixed(1)));
+        const newQty = Math.max(1, parseFloat((item.quantity + delta).toFixed(1)));
         return { ...item, quantity: newQty };
       }
       return item;
