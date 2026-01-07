@@ -40,9 +40,7 @@ const ProductCard: React.FC<Props & { cartItem?: import('../types').CartItem, on
 
       <div className="w-full space-y-2 mb-6">
         <h3 className="text-2xl font-black text-primary-950 dark:text-white leading-tight">{product.fish_name}</h3>
-        <p className="text-xs text-primary-400 dark:text-primary-500 font-medium leading-relaxed px-4">
-          Meaty and succulent, perfect for pan-fry or traditional masala fry.
-        </p>
+
       </div>
 
       <div className="w-full mt-auto space-y-4">
