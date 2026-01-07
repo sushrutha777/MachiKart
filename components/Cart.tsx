@@ -199,6 +199,87 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
 
   return (
     <div className="bg-white dark:bg-primary-900 p-6 rounded-2xl shadow-xl shadow-primary-900/10 border border-primary-100 dark:border-primary-800 sticky top-24">
+      {/* Track Your Order - Moved to Top */}
+      <div className="mb-8 pb-8 border-b border-primary-100 dark:border-primary-800">
+        <h3 className="text-sm font-black text-primary-950 dark:text-white uppercase tracking-widest mb-4">Track Your Order</h3>
+        <div className="flex gap-2 mb-4">
+          <input
+            type="tel"
+            maxLength={10}
+            placeholder="Enter 10-digit Phone Number"
+            className="flex-1 p-3 bg-primary-50 dark:bg-primary-950 rounded-xl text-xs font-bold text-primary-900 dark:text-primary-100 placeholder-primary-400 outline-none focus:ring-2 focus:ring-secondary-400"
+            value={searchPhone}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, '');
+              if (val.length <= 10) setSearchPhone(val);
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && checkStatus()}
+          />
+          <button
+            onClick={checkStatus}
+            disabled={checkingStatus}
+            className="px-4 bg-primary-900 dark:bg-primary-100 text-white dark:text-primary-950 rounded-xl font-bold text-xs uppercase disabled:opacity-70"
+          >
+            {checkingStatus ? '...' : 'Check'}
+          </button>
+        </div>
+
+        {statusError && (
+          <p className="text-xs font-bold text-red-500 mb-4 bg-red-50 dark:bg-red-900/20 p-3 rounded-xl border border-red-100 dark:border-red-900">{statusError}</p>
+        )}
+
+        {recentOrder && (
+          <div className="bg-primary-50 dark:bg-primary-950/50 p-4 rounded-2xl border border-primary-100 dark:border-primary-800 animation-fade-in-up">
+            <div className="flex justify-between items-center mb-4 pb-4 border-b border-primary-100 dark:border-primary-800">
+              <div>
+                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Order Total</p>
+                <p className="text-xl font-black text-primary-950 dark:text-white">₹{recentOrder.total_amount.toFixed(2)}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Items</p>
+                <p className="text-sm font-bold text-primary-900 dark:text-white">{recentOrder.items.length}</p>
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2">Current Status</p>
+              <div className={`p-4 rounded-xl border-l-4 shadow-sm ${recentOrder.order_status === 'NEW' ? 'bg-secondary-50 border-secondary-500 text-secondary-900' :
+                recentOrder.order_status === 'CONFIRMED' ? 'bg-blue-50 border-blue-500 text-blue-900' :
+                  recentOrder.order_status === 'OUT_FOR_DELIVERY' ? 'bg-purple-50 border-purple-500 text-purple-900' :
+                    recentOrder.order_status === 'DELIVERED' ? 'bg-green-50 border-green-500 text-green-900' :
+                      'bg-gray-50 border-gray-500 text-gray-900'
+                }`}>
+                <p className="font-bold text-sm leading-relaxed">
+                  {(() => {
+                    switch (recentOrder.order_status) {
+                      case 'NEW':
+                        return "Waiting for admin to confirm your order, it will take another few minutes to confirm";
+                      case 'CONFIRMED':
+                        return "Your order has been confirmed";
+                      case 'OUT_FOR_DELIVERY':
+                        return "Your order is on delivery will reach soon in 30 minutes";
+                      case 'DELIVERED':
+                        return "Delivered";
+                      default:
+                        return recentOrder.order_status.replace(/_/g, " ");
+                    }
+                  })()}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 border-t border-primary-200 dark:border-primary-800 pt-3 mt-3">
+              {recentOrder.items.map((item, idx) => (
+                <div key={idx} className="flex justify-between text-xs font-bold text-primary-600 dark:text-primary-400">
+                  <span>{item.fish_name} <span className="text-primary-400">× {item.quantity}</span></span>
+                  <span>₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0)).toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-black text-primary-950 dark:text-white tracking-tight">Basket</h2>
@@ -336,85 +417,6 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
           </form>
         </div>
       )}
-      <div className="mt-8 pt-8 border-t border-primary-100 dark:border-primary-800">
-        <h3 className="text-sm font-black text-primary-950 dark:text-white uppercase tracking-widest mb-4">Track Your Order</h3>
-        <div className="flex gap-2 mb-4">
-          <input
-            type="tel"
-            maxLength={10}
-            placeholder="Enter 10-digit Phone Number"
-            className="flex-1 p-3 bg-primary-50 dark:bg-primary-950 rounded-xl text-xs font-bold text-primary-900 dark:text-primary-100 placeholder-primary-400 outline-none focus:ring-2 focus:ring-secondary-400"
-            value={searchPhone}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, '');
-              if (val.length <= 10) setSearchPhone(val);
-            }}
-            onKeyDown={(e) => e.key === 'Enter' && checkStatus()}
-          />
-          <button
-            onClick={checkStatus}
-            disabled={checkingStatus}
-            className="px-4 bg-primary-900 dark:bg-primary-100 text-white dark:text-primary-950 rounded-xl font-bold text-xs uppercase disabled:opacity-70"
-          >
-            {checkingStatus ? '...' : 'Check'}
-          </button>
-        </div>
-
-        {statusError && (
-          <p className="text-xs font-bold text-red-500 mb-4 bg-red-50 dark:bg-red-900/20 p-3 rounded-xl border border-red-100 dark:border-red-900">{statusError}</p>
-        )}
-
-        {recentOrder && (
-          <div className="bg-primary-50 dark:bg-primary-950/50 p-4 rounded-2xl border border-primary-100 dark:border-primary-800 animation-fade-in-up">
-            <div className="flex justify-between items-center mb-4 pb-4 border-b border-primary-100 dark:border-primary-800">
-              <div>
-                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Order Total</p>
-                <p className="text-xl font-black text-primary-950 dark:text-white">₹{recentOrder.total_amount.toFixed(2)}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Items</p>
-                <p className="text-sm font-bold text-primary-900 dark:text-white">{recentOrder.items.length}</p>
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2">Current Status</p>
-              <div className={`p-4 rounded-xl border-l-4 shadow-sm ${recentOrder.order_status === 'NEW' ? 'bg-secondary-50 border-secondary-500 text-secondary-900' :
-                recentOrder.order_status === 'CONFIRMED' ? 'bg-blue-50 border-blue-500 text-blue-900' :
-                  recentOrder.order_status === 'OUT_FOR_DELIVERY' ? 'bg-purple-50 border-purple-500 text-purple-900' :
-                    recentOrder.order_status === 'DELIVERED' ? 'bg-green-50 border-green-500 text-green-900' :
-                      'bg-gray-50 border-gray-500 text-gray-900'
-                }`}>
-                <p className="font-bold text-sm leading-relaxed">
-                  {(() => {
-                    switch (recentOrder.order_status) {
-                      case 'NEW':
-                        return "Waiting for admin to confirm your order, it will take another few minutes to confirm";
-                      case 'CONFIRMED':
-                        return "Your order has been confirmed";
-                      case 'OUT_FOR_DELIVERY':
-                        return "Your order is on delivery will reach soon in 30 minutes";
-                      case 'DELIVERED':
-                        return "Delivered";
-                      default:
-                        return recentOrder.order_status.replace(/_/g, " ");
-                    }
-                  })()}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-2 border-t border-primary-200 dark:border-primary-800 pt-3 mt-3">
-              {recentOrder.items.map((item, idx) => (
-                <div key={idx} className="flex justify-between text-xs font-bold text-primary-600 dark:text-primary-400">
-                  <span>{item.fish_name} <span className="text-primary-400">× {item.quantity}</span></span>
-                  <span>₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0)).toFixed(2)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };

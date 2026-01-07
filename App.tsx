@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import CustomerView from './views/CustomerView';
 import AdminView from './views/AdminView';
+import CartView from './views/CartView';
 import { Product, CartItem } from './types';
 
 interface NavbarProps {
   cartCount: number;
-  onCartClick: () => void;
 }
 
-const Navbar: React.FC<NavbarProps & { theme: string; toggleTheme: () => void }> = ({ cartCount, onCartClick, theme, toggleTheme }) => {
+const Navbar: React.FC<NavbarProps & { theme: string; toggleTheme: () => void }> = ({ cartCount, theme, toggleTheme }) => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
 
@@ -46,8 +46,8 @@ const Navbar: React.FC<NavbarProps & { theme: string; toggleTheme: () => void }>
           </button>
 
           {!isAdmin ? (
-            <button
-              onClick={onCartClick}
+            <Link
+              to="/cart"
               className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-primary-800 text-secondary-400 hover:bg-secondary-500 hover:text-primary-950 transition-all duration-300"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,7 +58,7 @@ const Navbar: React.FC<NavbarProps & { theme: string; toggleTheme: () => void }>
                   {cartCount}
                 </span>
               )}
-            </button>
+            </Link>
           ) : (
             <Link
               to="/"
@@ -113,8 +113,7 @@ const App: React.FC = () => {
       }
       return [...prev, { ...product, quantity: 1, cleaning }];
     });
-    // Auto-scroll to cart when item is added
-    setTimeout(scrollToCart, 100);
+    // Auto-scroll removed as cart is on separate page
   };
 
   const removeFromCart = (productId: string) => {
@@ -143,19 +142,11 @@ const App: React.FC = () => {
 
   const clearCart = () => setCart([]);
 
-  const scrollToCart = () => {
-    const cartSection = document.getElementById('cart-section');
-    if (cartSection) {
-      cartSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <HashRouter>
       <div className={`min-h-screen flex flex-col transition-colors duration-300 font-sans text-primary-900 dark:text-primary-100 ${theme === 'dark' ? 'bg-primary-950' : 'bg-golden-shine'}`}>
         <Navbar
           cartCount={cart.reduce((acc, item) => acc + item.quantity, 0)}
-          onCartClick={scrollToCart}
           theme={theme}
           toggleTheme={toggleTheme}
         />
@@ -165,10 +156,15 @@ const App: React.FC = () => {
               <CustomerView
                 cart={cart}
                 addToCart={addToCart}
+                toggleCleaning={toggleCleaning}
+              />
+            } />
+            <Route path="/cart" element={
+              <CartView
+                cart={cart}
                 removeFromCart={removeFromCart}
                 updateQuantity={updateQuantity}
                 clearCart={clearCart}
-                toggleCleaning={toggleCleaning}
               />
             } />
             <Route path="/admin/*" element={<AdminView />} />

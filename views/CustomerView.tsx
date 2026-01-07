@@ -10,23 +10,17 @@ import {
 } from '../firebase';
 import { Product, CartItem } from '../types';
 import ProductCard from '../components/ProductCard';
-import Cart from '../components/Cart';
+
 
 interface CustomerViewProps {
   cart: CartItem[];
   addToCart: (product: Product, cleaning: boolean) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, delta: number) => void;
-  clearCart: () => void;
   toggleCleaning: (productId: string) => void;
 }
 
 const CustomerView: React.FC<CustomerViewProps> = ({
   cart,
   addToCart,
-  removeFromCart,
-  updateQuantity,
-  clearCart,
   toggleCleaning
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -127,7 +121,7 @@ const CustomerView: React.FC<CustomerViewProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 md:px-0" id="products">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3">
           {filteredProducts.length === 0 ? (
             <div className="bg-white dark:bg-primary-900 p-12 rounded-3xl shadow-sm text-center border-2 border-dashed border-primary-200 dark:border-primary-800">
               <div className="mx-auto w-16 h-16 bg-primary-100 dark:bg-primary-800 rounded-full flex items-center justify-center mb-4">
@@ -141,7 +135,7 @@ const CustomerView: React.FC<CustomerViewProps> = ({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProducts.map(product => (
                 <ProductCard
                   key={product.id}
@@ -155,18 +149,9 @@ const CustomerView: React.FC<CustomerViewProps> = ({
           )}
         </div>
 
-        <div className="lg:col-span-1">
-          <div className="sticky top-44" id="cart-section">
-            <Cart
-              items={cart}
-              onRemove={removeFromCart}
-              onUpdateQty={updateQuantity}
-              onOrderConfirmed={clearCart}
-            />
-          </div>
-        </div>
       </div>
     </div>
+
   );
 };
 
