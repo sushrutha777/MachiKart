@@ -27,13 +27,13 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC1WYcawmippctXm9s8Wd9xiV7NNYDxtwk",
-  authDomain: "machikart.firebaseapp.com",
-  projectId: "machikart",
-  storageBucket: "machikart.firebasestorage.app",
-  messagingSenderId: "36905574962",
-  appId: "1:36905574962:web:938c658b139fb3b43e522b",
-  measurementId: "G-WW58WJSTRM"
+  apiKey: "AIzaSyDo8pQUeC766W4VUlw0qwLfn-hEMAyJC_4",
+  authDomain: "macchikart-45247.firebaseapp.com",
+  projectId: "macchikart-45247",
+  storageBucket: "macchikart-45247.firebasestorage.app",
+  messagingSenderId: "1012498957988",
+  appId: "1:1012498957988:web:b54fb39818b39d5fb50831",
+  measurementId: "G-K8QTQ379E2"
 };
 
 // Initialize Firebase
