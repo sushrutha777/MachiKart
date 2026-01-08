@@ -88,6 +88,23 @@ const CustomerView: React.FC<CustomerViewProps> = ({
         <p className="max-w-2xl mx-auto text-primary-500 dark:text-primary-400 font-medium mt-6 leading-relaxed">
           Directly from Mangalore's Old Port. Hand-selected, masterfully cleaned, and dispatched the same morning to your doorstep.
         </p>
+        <div className="inline-block mt-8 p-[1px] rounded-xl bg-gradient-to-r from-secondary-200 via-secondary-400 to-secondary-200 animate-pulse">
+          <div className="bg-white dark:bg-primary-950 rounded-xl px-6 py-3">
+            <h3 className="text-secondary-600 dark:text-secondary-400 font-black text-sm tracking-[0.2em] uppercase mb-3 border-b-2 border-secondary-100 dark:border-primary-800 pb-2">Delivery Limits</h3>
+            <div className="flex flex-col gap-1.5 text-xs md:text-sm font-bold text-primary-600 dark:text-primary-300 items-center justify-center">
+              <span className="flex items-center gap-2"><span className="text-secondary-500 text-lg">•</span> Up to 1 kg within 3 km</span>
+              <span className="flex items-center gap-2"><span className="text-secondary-500 text-lg">•</span> Up to 3 kg within 5 km</span>
+              <span className="flex items-center gap-2"><span className="text-secondary-500 text-lg">•</span> Up to 5 kg within 10 km</span>
+            </div>
+            <div className="mt-3 pt-3 border-t border-secondary-100 dark:border-primary-800">
+              <div className="bg-secondary-50 dark:bg-primary-900 rounded-lg p-2 border border-secondary-200 dark:border-primary-800">
+                <p className="text-[10px] md:text-xs text-secondary-700 dark:text-secondary-400 font-bold leading-relaxed text-center uppercase tracking-wide">
+                  Please note: for deliveries beyond 10 km, minimum delivery charges will apply.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="w-16 h-1 bg-secondary-400 mx-auto mt-8 rounded-full"></div>
       </div>
 
