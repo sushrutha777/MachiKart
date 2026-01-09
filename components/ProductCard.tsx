@@ -19,7 +19,7 @@ const ProductCard: React.FC<Props & { cartItem?: import('../types').CartItem, on
       <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-primary-50 dark:bg-primary-800">
         <div className="absolute top-3 left-3 z-10">
           <span className={`text-[10px] font-black tracking-widest px-3 py-1.5 rounded-lg shadow-lg ${product.is_premium ? 'bg-secondary-500 text-primary-950' : 'bg-primary-950 text-secondary-500'}`}>
-            {product.is_premium ? "✨ PREMIUM CATCH" : "DAILY PORT FRESH"}
+            {product.is_premium ? "✨ PREMIUM CATCH" : "FRESH"}
           </span>
         </div>
         <img
