@@ -71,7 +71,7 @@ const ProductCard: React.FC<Props & { cartItem?: import('../types').CartItem, on
             {cleaningState && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>}
           </div>
           <span className={`text-xs font-bold ${cleaningState ? 'text-secondary-700 dark:text-secondary-400' : 'text-primary-400'}`}>
-            {cartItem ? (cleaningState ? 'Cleaned (+₹30)' : 'Add Cleaning (+₹30)') : 'Add Cleaning (+₹30)'}
+            {cartItem ? (cleaningState ? 'Cleaned (+₹30/kg)' : 'Add Cleaning (+₹30/kg)') : 'Add Cleaning (+₹30/kg)'}
           </span>
         </div>
 

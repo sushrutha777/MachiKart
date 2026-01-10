@@ -37,7 +37,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
   const [statusError, setStatusError] = useState('');
   const [checkingStatus, setCheckingStatus] = useState(false);
 
-  const total = items.reduce((sum, item) => sum + (item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0), 0);
+  const total = items.reduce((sum, item) => sum + (item.price_per_kg * item.quantity) + (item.cleaning ? 30 * item.quantity : 0), 0);
 
   // Effect to handle real-time status updates once an order is found
   useEffect(() => {
@@ -272,7 +272,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
               {recentOrder.items.map((item, idx) => (
                 <div key={idx} className="flex justify-between text-xs font-bold text-primary-600 dark:text-primary-400">
                   <span>{item.fish_name} <span className="text-primary-400">× {item.quantity}</span></span>
-                  <span>₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0)).toFixed(2)}</span>
+                  <span>₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 * item.quantity : 0)).toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -304,7 +304,7 @@ const Cart: React.FC<Props> = ({ items, onRemove, onUpdateQty, onOrderConfirmed 
                   <p className="text-xs text-secondary-600 dark:text-secondary-400 font-bold">₹{item.price_per_kg}/kg</p>
                   {item.cleaning && (
                     <span className="text-[10px] font-black text-primary-500 bg-primary-100 dark:bg-primary-900 px-1.5 py-0.5 rounded w-fit mt-1">
-                      Cleaned (+₹30)
+                      Cleaned (+₹30/kg)
                     </span>
                   )}
                 </div>

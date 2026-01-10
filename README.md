@@ -13,7 +13,7 @@
   
 - **Customer Experience:**
   - **Browse & Filter:** Premium vs. Standard catch filtering.
-  - **Customizable Orders:** Add "Cleaning Services" (₹30/item).
+  - **Customizable Orders:** Add "Cleaning Services" (₹30/kg).
   - **Cart Management:** 0.5kg quantity increments.
   - **Real-Time Tracking:** Check order status using just a phone number.
   - **Payment Info:** Clear instructions for Cash/UPI upon delivery.

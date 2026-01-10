@@ -210,7 +210,7 @@ const AdminOrders: React.FC = () => {
                 {o.items.map((item, idx) => (
                   <div key={idx} className="flex justify-between text-primary-700 dark:text-primary-300">
                     <span>{item.fish_name} × {item.quantity}</span>
-                    <span className="font-bold text-primary-900 dark:text-white">₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 : 0)).toFixed(2)}</span>
+                    <span className="font-bold text-primary-900 dark:text-white">₹{((item.price_per_kg * item.quantity) + (item.cleaning ? 30 * item.quantity : 0)).toFixed(2)}</span>
                   </div>
                 ))}
                 <div className="pt-2 border-t border-primary-200 dark:border-primary-800 flex justify-between font-black text-primary-950 dark:text-white text-sm">
